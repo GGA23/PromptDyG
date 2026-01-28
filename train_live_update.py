@@ -21,7 +21,7 @@ from networks.io import makedirs_rm_exist
 from utils import node_degree
 from torch.utils.tensorboard import SummaryWriter
 from tqdm import tqdm
-from TTA  import GraphTTA
+from PromptDyG  import PromptDyG
 
 
 
@@ -253,7 +253,7 @@ def train_live_update(loggers, model,  optimizer,  scheduler, datasets,
     auc_hist = list()
     mrr_hist = list()
     f1_hist = list()
-    Agent_TTA = GraphTTA(cfg)
+    Agent_TTA = PromptDyG(cfg)
     for t in tqdm(task_range, desc='snapshot', leave=True):
         # current task: t --> t+1.
         # (1) Evaluate model's performance on this task, at this time, the
@@ -328,7 +328,7 @@ def train_live_update(loggers, model,  optimizer,  scheduler, datasets,
             print('\n')
             print(perf)
 
-            mrr, auroc, f1 = Agent_TTA.learn_graph(model, datasets, t, prev_node_states)
+            mrr, auroc, f1 = Agent_TTA.optim_prompt(model, datasets, t, prev_node_states)
 
 
 
