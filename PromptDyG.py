@@ -29,9 +29,9 @@ class PromptDyG():
         d = batch.node_feature.shape[1]
 
         delta_feat = Parameter(torch.FloatTensor(nnodes, d).to(self.device))
-        self.delta_feat = delta_feat
-        self.delta_feat.data.fill_(1e-7)
-        self.optimizer_feat = torch.optim.Adam([self.delta_feat], lr=cfg.TTA.lr_feat)
+        self.prompt_feat = delta_feat
+        self.prompt_feat.data.fill_(1e-7)
+        self.optimizer_feat = torch.optim.Adam([self.prompt_feat], lr=cfg.TTA.lr_feat)
 
         #self.model = model
         for param in model.parameters():
@@ -59,7 +59,7 @@ class PromptDyG():
     
             with torch.no_grad():
                 batch_new = deepcopy(self.batch)
-                batch_new.node_feature = self.feat + self.delta_feat
+                batch_new.node_feature = self.feat + self.prompt_feat
                 pred, true = model(batch_new)
                 mrr, auroc, f1 = self.evaluate_single(pred, true, model, datasets[2], t, prev_node_states)
                 
@@ -98,7 +98,7 @@ class PromptDyG():
         mrr_batch = get_task_batch(dataset, t, t + 1,
                                prev_node_states).clone()
         
-        mrr_batch.node_feature = mrr_batch.node_feature + self.delta_feat
+        mrr_batch.node_feature = mrr_batch.node_feature + self.prompt_feat
         
 
         mrr, rck1, rck3, rck10 = train_utils.report_rank_based_eval(
@@ -113,7 +113,7 @@ class PromptDyG():
         batch_new = deepcopy(self.batch)
         if hasattr(self, 'delta_feat'):
               
-            batch_new.node_feature = self.feat + self.delta_feat
+            batch_new.node_feature = self.feat + self.prompt_feat
         else:
             batch_new.node_feature = self.feat
         batch_size = 1000
