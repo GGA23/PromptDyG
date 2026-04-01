@@ -52,8 +52,8 @@ def load_single_dataset(dataset_dir: str) -> Graph:
 
     # num_nodes = torch.max(edge_index) + 1
     # Use dummy node features.
-    #为每个节点分配一个 dummy 特征（全为1的标量向量），维度为 (N, 1)
-    node_feature = torch.ones(num_nodes, 1).float()
+    #为每个节点分配一个 dummy 特征（全为1的标量向量），维度为 (N, 200)
+    node_feature = torch.ones(num_nodes, 200).float()
 
     #原始时间戳仍保留，作为动态图建模所需的 edge_time。
     edge_time = torch.FloatTensor(df_trans['TIME'].values)
