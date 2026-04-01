@@ -46,7 +46,7 @@ def load_single_dataset(dataset_dir: str) -> Graph:
     # node_feature = node_degree(edge_index, n=num_nodes, mode='both')
     # node_feature = node_feature.view(num_nodes, 1)
     # use node degree as feature leads to info-leak risk.
-    node_feature = torch.ones(num_nodes, 1)
+    node_feature = torch.ones(num_nodes, 200)
 
     print('feature_node_int_num: ', node_feature.max() + 1)
 
