@@ -115,7 +115,7 @@ def load_AS_dataset(format, name, dataset_dir):
                                                'one_hot_degree_local']
 
         if cfg.dataset.AS_node_feature == 'one':
-            node_feature = torch.ones(num_nodes, 1)
+            node_feature = torch.ones(num_nodes, 200)
         elif cfg.dataset.AS_node_feature == 'one_hot_id':
             # One hot encoding the node ID.
             node_feature = torch.Tensor(np.eye(num_nodes))
