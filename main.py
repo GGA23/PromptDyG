@@ -21,9 +21,7 @@ warnings.filterwarnings("ignore")
 
 
 def seed_anything(seed=42):
-    '''
-    Step 1.2: Initialize random seed
-    '''
+
     random.seed(seed)
     np.random.seed(seed)
     torch.manual_seed(seed)
