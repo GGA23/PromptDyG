@@ -5,7 +5,7 @@ import deepsnap
 import ipdb
 from config import cfg
 #from graphgym.models.gnn import GNN
-import networks.graph_prompt as Prompt
+#import networks.graph_prompt as Prompt
 import torch.optim as optim
 #from graphgym.contrib.network import *
 #import graphgym.register as register
