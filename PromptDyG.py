@@ -12,7 +12,7 @@ import numpy as np
 import torch.nn as nn
 import math
 import torch.nn.functional as F
-from plot_img import plot_similarity_distribution,visualize_embedding_shift
+#from plot_img import plot_similarity_distribution,visualize_embedding_shift
 
 class PromptDyG():
     def __init__(self, config):
@@ -28,11 +28,11 @@ class PromptDyG():
         nnodes = batch.node_feature.shape[0]
         d = batch.node_feature.shape[1]
 
-        delta_feat = Parameter(torch.FloatTensor(nnodes, d).to(self.device))
-        self.prompt_feat = delta_feat
-        self.prompt_feat.data.fill_(1e-7)
+        prompt_feat = Parameter(torch.FloatTensor(nnodes, d).to(self.device))
+        prompt_feat.data.fill_(1e-7)
+        self.prompt_feat = prompt_feat
+        
         self.optimizer_feat = torch.optim.Adam([self.prompt_feat], lr=cfg.TTA.lr_feat)
-
         #self.model = model
         for param in model.parameters():
             param.requires_grad = False
@@ -111,8 +111,7 @@ class PromptDyG():
         loss =0
 
         batch_new = deepcopy(self.batch)
-        if hasattr(self, 'delta_feat'):
-              
+        if hasattr(self, 'prompt_feat'):              
             batch_new.node_feature = self.feat + self.prompt_feat
         else:
             batch_new.node_feature = self.feat
